@@ -3,7 +3,7 @@ package Catalyst::Plugin::Authentication::Credential::JugemKey;
 use warnings;
 use strict;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use WebService::JugemKey::Auth;
 use UNIVERSAL::require;
@@ -60,7 +60,7 @@ sub authenticate_jugemkey_get_token {
     }
     else {
         $c->log->debug(
-            sprintf "Failed to authenticate hatena.  Reason: '%s'",
+            sprintf "Failed to authenticate jugemkey.  Reason: '%s'",
             $jugemkey->errstr, )
             if $c->debug;
 
@@ -75,7 +75,7 @@ Catalyst::Plugin::Authentication::Credential::JugemKey - JugemKey authentication
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
@@ -84,13 +84,13 @@ Version 0.01
   # load plugin and setup
   use Catalyst qw(
       Authentication
-      Authentication::Credential::Hatena
+      Authentication::Credential::JugemKey
       Session
       Session::Store::FastMmap
       Session::State::Cookie
   );
 
-  __PACKAGE__->config->{authentication}->{hatena} = {
+  __PACKAGE__->config->{authentication}->{jugemkey} = {
       api_key => 'your api_key',
       secret  => 'your shared secret',
       perms   => 'permission',
@@ -98,7 +98,7 @@ Version 0.01
 
   # in controller
   # redirect login url
-  sub login : Path('/hatena/login') {
+  sub login : Path('/jugemkey/login') {
       my ( $self, $c ) = @_;
       $c->res->redirect(
           $c->authenticate_jugemkey_url({
