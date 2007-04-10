@@ -3,7 +3,7 @@ package Catalyst::Plugin::Authentication::Credential::JugemKey;
 use warnings;
 use strict;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 use WebService::JugemKey::Auth;
 use UNIVERSAL::require;
@@ -75,7 +75,7 @@ Catalyst::Plugin::Authentication::Credential::JugemKey - JugemKey authentication
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
@@ -115,6 +115,8 @@ Version 0.03
 
       if ( my $user = $c->authenticate_jugemkey_get_token ) {
           # login successful
+          $c->session->{name}  = $user->name;
+          $c->session->{token} = $user->token;
           $c->res->redirect( $c->uri_for('/') );
       }
       else {

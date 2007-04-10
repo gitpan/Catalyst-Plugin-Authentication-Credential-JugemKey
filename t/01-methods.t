@@ -43,9 +43,11 @@ is( $c->authenticate_jugemkey_url, $auth_url, 'returns auth_url correctly' );
 my $req = Test::MockObject->new;
 my $res = Test::MockObject->new;
 
-$res->fake_module('WebService::JugemKey::Auth::User');
-$res->mock( name  => sub { 'miyashita' } );
-$res->mock( token => sub { 'dummy_token' } );
+$res->fake_module(
+    'WebService::JugemKey::Auth::User',
+    name  => sub {'miyashita'},
+    token => sub {'dummy_token'}
+);
 $jugemkey->mock( get_token => sub { $res } );
 
 my $params = {};
@@ -55,6 +57,7 @@ $req->mock( param => sub { $params->{$_[1]} } );
 $c->mock( req                => sub {$req} );
 $c->mock( default_auth_store => sub { } );
 $c->mock( set_authenticated  => sub { } );
+$c->mock( debug => sub { 0 } );
 
 ok( !$c->authenticate_jugemkey_get_token, 'auth failed without frob' );
 
